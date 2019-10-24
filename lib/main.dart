@@ -124,34 +124,39 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           children: <Widget>[
-            TextField(
-              controller: searchController,
+            Container(
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(hintText: 'Enter a Task term'),
+              ),
             ),
             new Expanded(
-              child: new ListView.builder(
-                itemCount: todo.length,
-                itemBuilder: (BuildContext ctxt, int Index) {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 5),
-                    child: FlatButton(
-                        color: Colors.orange,
-                        textColor: Colors.white,
-                        disabledColor: Colors.grey,
-                        disabledTextColor: Colors.black,
-                        padding: EdgeInsets.all(15),
-                        splashColor: Colors.orangeAccent,
-                        onPressed: () {
-                          _removeTodo(Index);
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            (Index + 1).toString() + ": " + todo[Index],
-                          ),
-                        )),
-                  );
-                },
-              ),
+              child: todo.isEmpty
+                  ? Center(child: Text('Todo is Empty'))
+                  : new ListView.builder(
+                      itemCount: todo.length,
+                      itemBuilder: (BuildContext ctxt, int Index) {
+                        return Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          child: FlatButton(
+                              color: Colors.orange,
+                              textColor: Colors.white,
+                              disabledColor: Colors.grey,
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(15),
+                              splashColor: Colors.orangeAccent,
+                              onPressed: () {
+                                _removeTodo(Index);
+                              },
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  (Index + 1).toString() + ": " + todo[Index],
+                                ),
+                              )),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
