@@ -146,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            Index.toString() + ": " + todo[Index],
+                            (Index + 1).toString() + ": " + todo[Index],
                           ),
                         )),
                   );
