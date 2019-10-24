@@ -46,20 +46,50 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> todo = [];
   final searchController = TextEditingController();
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     searchController.dispose();
     super.dispose();
   }
+
   void _addTodo() {
     setState(() {
-      todo.add(searchController.text);
-      searchController.text = "";
+      if (searchController.text.length > 0) {
+        todo.add(searchController.text);
+        searchController.text = "";
+      }
     });
     print(todo);
   }
 
+  void _removeTodo(index) {
+    String tempValue = todo[index];
+    setState(() {
+      todo.removeAt(index);
+    });
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Successfully Deleted!!!"),
+          content: new Text(tempValue),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +125,33 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           children: <Widget>[
             TextField(
-                controller: searchController,
-
+              controller: searchController,
+            ),
+            new Expanded(
+              child: new ListView.builder(
+                itemCount: todo.length,
+                itemBuilder: (BuildContext ctxt, int Index) {
+                  return Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    child: FlatButton(
+                        color: Colors.orange,
+                        textColor: Colors.white,
+                        disabledColor: Colors.grey,
+                        disabledTextColor: Colors.black,
+                        padding: EdgeInsets.all(15),
+                        splashColor: Colors.orangeAccent,
+                        onPressed: () {
+                          _removeTodo(Index);
+                        },
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            Index.toString() + ": " + todo[Index],
+                          ),
+                        )),
+                  );
+                },
+              ),
             ),
           ],
         ),
